@@ -1,0 +1,79 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Стиль для кнопок -->
+    <Style x:Key="BaseButtonStyle" TargetType="Button">
+        <Setter Property="FontFamily" Value="Monotype Corsiva"/>
+        <Setter Property="Background" Value="#5EC6CD"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderBrush" Value="#5EC6CD"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="30"/>
+    </Style>
+
+    <!-- Стиль для текстовых полей -->
+    <Style x:Key="BaseTextBoxStyle" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="Monotype Corsiva"/>
+        <Setter Property="FontSize" Value="16px"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderBrush" Value="#5EC6CD"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+
+    <!-- Стиль для меток -->
+    <Style x:Key="BaseTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Monotype Corsiva"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+
+    <!-- Стиль для DatePicker -->
+    <Style x:Key="BaseDatePickerStyle" TargetType="DatePicker">
+        <Setter Property="FontFamily" Value="Monotype Corsiva"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderBrush" Value="#5EC6CD"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+    
+    <!-- Стиль для Window -->
+    <Style x:Key="BaseWindowStyle" TargetType="Window">
+        <Setter Property="FontFamily" Value="Monotype Corsiva"/>
+        <Setter Property="Background" Value="#FFFFFF"/>
+    </Style>
+
+    <!-- Стиль для Page -->
+    <Style x:Key="BasePageStyle" TargetType="Page">
+        <Setter Property="FontFamily" Value="Monotype Corsiva"/>
+        <Setter Property="Background" Value="#FFFFFF"/>
+    </Style>
+    
+    <!-- Стиль для DataGrid -->
+    <Style x:Key="BaseDataGridStyle" TargetType="DataGrid">
+        <Setter Property="FontFamily" Value="Monotype Corsiva"/>
+        <Setter Property="Background" Value="#D2F1F0"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderBrush" Value="#5EC6CD"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+    </Style>
+
+    <!-- Стиль для ComboBox -->
+    <Style x:Key="BaseComboBoxStyle" TargetType="ComboBox">
+        <Setter Property="FontFamily" Value="Monotype Corsiva"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderBrush" Value="#5EC6CD"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+</ResourceDictionary>

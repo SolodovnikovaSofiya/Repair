@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="82f91e024cce41d898a5f1cd2a294450" Name="Diagram1">
+        <EntityTypeShape EntityType="RepairRequestsModel.Client" Width="1.5" PointX="3.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="RepairRequestsModel.Comment" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RepairRequestsModel.Equipment" Width="1.5" PointX="3.75" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="RepairRequestsModel.FaultType" Width="1.5" PointX="3.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RepairRequestsModel.Performer" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="RepairRequestsModel.RepairRequest" Width="1.5" PointX="6" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RepairRequestsModel.Status" Width="1.5" PointX="3.75" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="RepairRequestsModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="RepairRequestsModel.FK__RepairReq__clien__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="RepairRequestsModel.FK__Comment__perform__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="RepairRequestsModel.FK__Comment__request__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="RepairRequestsModel.FK__RepairReq__equip__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="RepairRequestsModel.FK__RepairReq__fault__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="RepairRequestsModel.FK__RepairReq__assig__74AE54BC" ManuallyRouted="false" />
+        <AssociationConnector Association="RepairRequestsModel.FK__RepairReq__statu__73BA3083" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

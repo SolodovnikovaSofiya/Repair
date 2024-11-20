@@ -1,0 +1,542 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище RepairRequestsModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="clientId" />
+          </Key>
+          <Property Name="clientId" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="contactInfo" Type="text" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="commentId" />
+          </Key>
+          <Property Name="commentId" Type="int" Nullable="false" />
+          <Property Name="requestId" Type="int" Nullable="false" />
+          <Property Name="performerId" Type="int" Nullable="false" />
+          <Property Name="commentDate" Type="datetime" Nullable="false" />
+          <Property Name="text" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="equipmentId" />
+          </Key>
+          <Property Name="equipmentId" Type="int" Nullable="false" />
+          <Property Name="serialNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="model" Type="varchar" MaxLength="100" />
+          <Property Name="location" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="FaultType">
+          <Key>
+            <PropertyRef Name="faultTypeId" />
+          </Key>
+          <Property Name="faultTypeId" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Performer">
+          <Key>
+            <PropertyRef Name="performerId" />
+          </Key>
+          <Property Name="performerId" Type="int" Nullable="false" />
+          <Property Name="firstName" Type="varchar" MaxLength="100" />
+          <Property Name="middleName" Type="varchar" MaxLength="100" />
+          <Property Name="lastName" Type="varchar" MaxLength="100" />
+          <Property Name="specialization" Type="varchar" MaxLength="100" />
+          <Property Name="contactInfo" Type="text" />
+        </EntityType>
+        <EntityType Name="RepairRequest">
+          <Key>
+            <PropertyRef Name="requestId" />
+          </Key>
+          <Property Name="requestId" Type="int" Nullable="false" />
+          <Property Name="requestDate" Type="datetime" Nullable="false" />
+          <Property Name="equipmentId" Type="int" Nullable="false" />
+          <Property Name="faultTypeId" Type="int" Nullable="false" />
+          <Property Name="description" Type="text" />
+          <Property Name="clientId" Type="int" Nullable="false" />
+          <Property Name="statusId" Type="int" Nullable="false" />
+          <Property Name="assignedTo" Type="int" />
+          <Property Name="completionDate" Type="datetime" />
+          <Property Name="report" Type="text" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="statusId" />
+          </Key>
+          <Property Name="statusId" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK__Comment__perform__787EE5A0">
+          <End Role="Performer" Type="Self.Performer" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Performer">
+              <PropertyRef Name="performerId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="performerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__request__778AC167">
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairRequest">
+              <PropertyRef Name="requestId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="requestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__assig__74AE54BC">
+          <End Role="Performer" Type="Self.Performer" Multiplicity="0..1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Performer">
+              <PropertyRef Name="performerId" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="assignedTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__clien__72C60C4A">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="clientId" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="clientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__equip__70DDC3D8">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="equipmentId" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="equipmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__fault__71D1E811">
+          <End Role="FaultType" Type="Self.FaultType" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FaultType">
+              <PropertyRef Name="faultTypeId" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="faultTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__statu__73BA3083">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="statusId" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="statusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище RepairRequestsModelContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FaultType" EntityType="Self.FaultType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Performer" EntityType="Self.Performer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RepairRequest" EntityType="Self.RepairRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Comment__perform__787EE5A0" Association="Self.FK__Comment__perform__787EE5A0">
+            <End Role="Performer" EntitySet="Performer" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__request__778AC167" Association="Self.FK__Comment__request__778AC167">
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__assig__74AE54BC" Association="Self.FK__RepairReq__assig__74AE54BC">
+            <End Role="Performer" EntitySet="Performer" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__clien__72C60C4A" Association="Self.FK__RepairReq__clien__72C60C4A">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__equip__70DDC3D8" Association="Self.FK__RepairReq__equip__70DDC3D8">
+            <End Role="Equipment" EntitySet="Equipment" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__fault__71D1E811" Association="Self.FK__RepairReq__fault__71D1E811">
+            <End Role="FaultType" EntitySet="FaultType" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__statu__73BA3083" Association="Self.FK__RepairReq__statu__73BA3083">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RepairRequestsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="clientId" />
+          </Key>
+          <Property Name="clientId" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contactInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK__RepairReq__clien__72C60C4A" FromRole="Client" ToRole="RepairRequest" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="commentId" />
+          </Key>
+          <Property Name="commentId" Type="Int32" Nullable="false" />
+          <Property Name="requestId" Type="Int32" Nullable="false" />
+          <Property Name="performerId" Type="Int32" Nullable="false" />
+          <Property Name="commentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Performer" Relationship="Self.FK__Comment__perform__787EE5A0" FromRole="Comment" ToRole="Performer" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK__Comment__request__778AC167" FromRole="Comment" ToRole="RepairRequest" />
+        </EntityType>
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="equipmentId" />
+          </Key>
+          <Property Name="equipmentId" Type="Int32" Nullable="false" />
+          <Property Name="serialNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="model" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK__RepairReq__equip__70DDC3D8" FromRole="Equipment" ToRole="RepairRequest" />
+        </EntityType>
+        <EntityType Name="FaultType">
+          <Key>
+            <PropertyRef Name="faultTypeId" />
+          </Key>
+          <Property Name="faultTypeId" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK__RepairReq__fault__71D1E811" FromRole="FaultType" ToRole="RepairRequest" />
+        </EntityType>
+        <EntityType Name="Performer">
+          <Key>
+            <PropertyRef Name="performerId" />
+          </Key>
+          <Property Name="performerId" Type="Int32" Nullable="false" />
+          <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="middleName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="specialization" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="contactInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK__Comment__perform__787EE5A0" FromRole="Performer" ToRole="Comment" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK__RepairReq__assig__74AE54BC" FromRole="Performer" ToRole="RepairRequest" />
+        </EntityType>
+        <EntityType Name="RepairRequest">
+          <Key>
+            <PropertyRef Name="requestId" />
+          </Key>
+          <Property Name="requestId" Type="Int32" Nullable="false" />
+          <Property Name="requestDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="equipmentId" Type="Int32" Nullable="false" />
+          <Property Name="faultTypeId" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="clientId" Type="Int32" Nullable="false" />
+          <Property Name="statusId" Type="Int32" Nullable="false" />
+          <Property Name="assignedTo" Type="Int32" />
+          <Property Name="completionDate" Type="DateTime" Precision="3" />
+          <Property Name="report" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__RepairReq__clien__72C60C4A" FromRole="RepairRequest" ToRole="Client" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK__Comment__request__778AC167" FromRole="RepairRequest" ToRole="Comment" />
+          <NavigationProperty Name="Equipment" Relationship="Self.FK__RepairReq__equip__70DDC3D8" FromRole="RepairRequest" ToRole="Equipment" />
+          <NavigationProperty Name="FaultType" Relationship="Self.FK__RepairReq__fault__71D1E811" FromRole="RepairRequest" ToRole="FaultType" />
+          <NavigationProperty Name="Performer" Relationship="Self.FK__RepairReq__assig__74AE54BC" FromRole="RepairRequest" ToRole="Performer" />
+          <NavigationProperty Name="Status" Relationship="Self.FK__RepairReq__statu__73BA3083" FromRole="RepairRequest" ToRole="Status" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="statusId" />
+          </Key>
+          <Property Name="statusId" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="RepairRequest" Relationship="Self.FK__RepairReq__statu__73BA3083" FromRole="Status" ToRole="RepairRequest" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK__RepairReq__clien__72C60C4A">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="clientId" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="clientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__perform__787EE5A0">
+          <End Role="Performer" Type="Self.Performer" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Performer">
+              <PropertyRef Name="performerId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="performerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comment__request__778AC167">
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairRequest">
+              <PropertyRef Name="requestId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="requestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__equip__70DDC3D8">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="equipmentId" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="equipmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__fault__71D1E811">
+          <End Role="FaultType" Type="Self.FaultType" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FaultType">
+              <PropertyRef Name="faultTypeId" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="faultTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__assig__74AE54BC">
+          <End Role="Performer" Type="Self.Performer" Multiplicity="0..1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Performer">
+              <PropertyRef Name="performerId" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="assignedTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__statu__73BA3083">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="RepairRequest" Type="Self.RepairRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="statusId" />
+            </Principal>
+            <Dependent Role="RepairRequest">
+              <PropertyRef Name="statusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Client" EntityType="Self.Client" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" />
+          <EntitySet Name="Equipment" EntityType="Self.Equipment" />
+          <EntitySet Name="FaultType" EntityType="Self.FaultType" />
+          <EntitySet Name="Performer" EntityType="Self.Performer" />
+          <EntitySet Name="RepairRequest" EntityType="Self.RepairRequest" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK__RepairReq__clien__72C60C4A" Association="Self.FK__RepairReq__clien__72C60C4A">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__perform__787EE5A0" Association="Self.FK__Comment__perform__787EE5A0">
+            <End Role="Performer" EntitySet="Performer" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comment__request__778AC167" Association="Self.FK__Comment__request__778AC167">
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__equip__70DDC3D8" Association="Self.FK__RepairReq__equip__70DDC3D8">
+            <End Role="Equipment" EntitySet="Equipment" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__fault__71D1E811" Association="Self.FK__RepairReq__fault__71D1E811">
+            <End Role="FaultType" EntitySet="FaultType" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__assig__74AE54BC" Association="Self.FK__RepairReq__assig__74AE54BC">
+            <End Role="Performer" EntitySet="Performer" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__statu__73BA3083" Association="Self.FK__RepairReq__statu__73BA3083">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="RepairRequest" EntitySet="RepairRequest" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище RepairRequestsModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="RepairRequestsModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="clientId" ColumnName="clientId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="contactInfo" ColumnName="contactInfo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comment">
+            <EntityTypeMapping TypeName="RepairRequestsModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="commentId" ColumnName="commentId" />
+                <ScalarProperty Name="requestId" ColumnName="requestId" />
+                <ScalarProperty Name="performerId" ColumnName="performerId" />
+                <ScalarProperty Name="commentDate" ColumnName="commentDate" />
+                <ScalarProperty Name="text" ColumnName="text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Equipment">
+            <EntityTypeMapping TypeName="RepairRequestsModel.Equipment">
+              <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="equipmentId" ColumnName="equipmentId" />
+                <ScalarProperty Name="serialNumber" ColumnName="serialNumber" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="location" ColumnName="location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FaultType">
+            <EntityTypeMapping TypeName="RepairRequestsModel.FaultType">
+              <MappingFragment StoreEntitySet="FaultType">
+                <ScalarProperty Name="faultTypeId" ColumnName="faultTypeId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Performer">
+            <EntityTypeMapping TypeName="RepairRequestsModel.Performer">
+              <MappingFragment StoreEntitySet="Performer">
+                <ScalarProperty Name="performerId" ColumnName="performerId" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="middleName" ColumnName="middleName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="specialization" ColumnName="specialization" />
+                <ScalarProperty Name="contactInfo" ColumnName="contactInfo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RepairRequest">
+            <EntityTypeMapping TypeName="RepairRequestsModel.RepairRequest">
+              <MappingFragment StoreEntitySet="RepairRequest">
+                <ScalarProperty Name="requestId" ColumnName="requestId" />
+                <ScalarProperty Name="requestDate" ColumnName="requestDate" />
+                <ScalarProperty Name="equipmentId" ColumnName="equipmentId" />
+                <ScalarProperty Name="faultTypeId" ColumnName="faultTypeId" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="clientId" ColumnName="clientId" />
+                <ScalarProperty Name="statusId" ColumnName="statusId" />
+                <ScalarProperty Name="assignedTo" ColumnName="assignedTo" />
+                <ScalarProperty Name="completionDate" ColumnName="completionDate" />
+                <ScalarProperty Name="report" ColumnName="report" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="RepairRequestsModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="statusId" ColumnName="statusId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="RepairRequestsModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
