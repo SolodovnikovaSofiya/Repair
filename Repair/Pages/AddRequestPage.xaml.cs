@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Repair.Pages
 {
@@ -21,64 +13,76 @@ namespace Repair.Pages
     public partial class AddRequestPage : Page
     {
         private Entities _context;
+        private RepairRequest _repairRequest = new RepairRequest();
 
         public AddRequestPage()
         {
             InitializeComponent();
             _context = Entities.GetContext();
+            this.DataContext = _repairRequest;
             LoadData();
         }
 
         private void LoadData()
         {
             EquipmentComboBox.ItemsSource = _context.Equipment.ToList();
-            EquipmentComboBox.DisplayMemberPath = "Name";
+            EquipmentComboBox.DisplayMemberPath = "name";
             EquipmentComboBox.SelectedValuePath = "EquipmentId";
 
             FaultTypeComboBox.ItemsSource = _context.FaultType.ToList();
-            FaultTypeComboBox.DisplayMemberPath = "Name";
+            FaultTypeComboBox.DisplayMemberPath = "name";
             FaultTypeComboBox.SelectedValuePath = "FaultTypeId";
 
             ClientComboBox.ItemsSource = _context.Client.ToList();
-            ClientComboBox.DisplayMemberPath = "Name";
+            ClientComboBox.DisplayMemberPath = "name";
             ClientComboBox.SelectedValuePath = "ClientId";
 
             StatusComboBox.ItemsSource = _context.Status.ToList();
-            StatusComboBox.DisplayMemberPath = "Name";
+            StatusComboBox.DisplayMemberPath = "name";
             StatusComboBox.SelectedValuePath = "StatusId";
-
-            PerformerComboBox.ItemsSource = _context.Performer.ToList();
-            PerformerComboBox.DisplayMemberPath = "Name";
-            PerformerComboBox.SelectedValuePath = "PerformerId";
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (EquipmentComboBox.SelectedItem == null || FaultTypeComboBox.SelectedItem == null ||
-                ClientComboBox.SelectedItem == null || StatusComboBox.SelectedItem == null ||
-                RequestDatePicker.SelectedDate == null)
+            StringBuilder errors = new StringBuilder();
+
+            if (EquipmentComboBox.SelectedItem == null)
+                errors.AppendLine("Выберите оборудование!");
+            if (FaultTypeComboBox.SelectedItem == null)
+                errors.AppendLine("Выберите тип неисправности!");
+            if (ClientComboBox.SelectedItem == null)
+                errors.AppendLine("Выберите клиента!");
+            if (StatusComboBox.SelectedItem == null)
+                errors.AppendLine("Выберите статус!");
+            if (RequestDatePicker.SelectedDate == null)
+                errors.AppendLine("Выберите дату заявки!");
+            if (string.IsNullOrWhiteSpace(DescriptionTextBox.Text))
+                errors.AppendLine("Укажите описание!");
+
+            if (errors.Length > 0)
             {
-                MessageBox.Show("Заполните все поля.", "Ошибка");
+                MessageBox.Show(errors.ToString(), "Ошибка");
                 return;
             }
 
-            var newRequest = new RepairRequest
+            _repairRequest.equipmentId = (int)EquipmentComboBox.SelectedValue;
+            _repairRequest.faultTypeId = (int)FaultTypeComboBox.SelectedValue;
+            _repairRequest.clientId = (int)ClientComboBox.SelectedValue;
+            _repairRequest.statusId = (int)StatusComboBox.SelectedValue;
+            _repairRequest.requestDate = RequestDatePicker.SelectedDate.Value;
+            _repairRequest.description = DescriptionTextBox.Text;
+
+            _context.RepairRequest.Add(_repairRequest);
+            try
             {
-                equipmentId = (int)EquipmentComboBox.SelectedValue,
-                faultTypeId = (int)FaultTypeComboBox.SelectedValue,
-                clientId = (int)ClientComboBox.SelectedValue,
-                statusId = (int)StatusComboBox.SelectedValue,
-                assignedTo = (int?)PerformerComboBox.SelectedValue,
-                requestDate = RequestDatePicker.SelectedDate.Value,
-                description = DescriptionTextBox.Text,
-                report = ReportTextBox.Text
-            };
-
-            _context.RepairRequest.Add(newRequest);
-            _context.SaveChanges();
-
-            MessageBox.Show("Заявка успешно добавлена.", "Успех");
-            NavigationService.Navigate(new DataPage());
+                _context.SaveChanges();
+                MessageBox.Show("Заявка успешно добавлена.", "Успех");
+                NavigationService.Navigate(new DataPage());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "Ошибка");
+            }
         }
     }
 }

@@ -19,30 +19,25 @@
         <!-- Левая колонка -->
         <StackPanel Grid.Column="0" >
             <TextBlock Text="Оборудование" Style="{StaticResource BaseTextBlockStyle}" FontSize="16" />
-            <ComboBox x:Name="EquipmentComboBox" Style="{StaticResource BaseComboBoxStyle}"/>
+            <ComboBox x:Name="EquipmentComboBox" SelectedItem="{Binding Equipment.name}" Style="{StaticResource BaseComboBoxStyle}"/>
 
             <TextBlock Text="Тип неисправности" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <ComboBox x:Name="FaultTypeComboBox" Style="{StaticResource BaseComboBoxStyle}"/>
+            <ComboBox x:Name="FaultTypeComboBox" SelectedItem="{Binding FaultType.name}" Style="{StaticResource BaseComboBoxStyle}"/>
 
             <TextBlock Text="Клиент" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <ComboBox x:Name="ClientComboBox" Style="{StaticResource BaseComboBoxStyle}"/>
+            <ComboBox x:Name="ClientComboBox" SelectedItem="{Binding Client.name}" Style="{StaticResource BaseComboBoxStyle}"/>
 
             <TextBlock Text="Статус" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <ComboBox x:Name="StatusComboBox" Style="{StaticResource BaseComboBoxStyle}"/>
-            <TextBlock Text="Исполнитель" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <ComboBox x:Name="PerformerComboBox" Style="{StaticResource BaseComboBoxStyle}"/>
+            <ComboBox x:Name="StatusComboBox" SelectedItem="{Binding Status.name}" Style="{StaticResource BaseComboBoxStyle}"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1">
 
             <TextBlock Text="Дата заявки" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <DatePicker x:Name="RequestDatePicker" Style="{StaticResource BaseDatePickerStyle}" FontSize="16"/>
+            <DatePicker x:Name="RequestDatePicker"  SelectedDate="{Binding requestDate}" Style="{StaticResource BaseDatePickerStyle}" FontSize="16"/>
 
             <TextBlock Text="Описание" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <TextBox x:Name="DescriptionTextBox" Style="{StaticResource BaseTextBoxStyle}"/>
-
-            <TextBlock Text="Отчет" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <TextBox x:Name="ReportTextBox" Style="{StaticResource BaseTextBoxStyle}"/>
+            <TextBox x:Name="DescriptionTextBox"  Text="{Binding description}" Style="{StaticResource BaseTextBoxStyle}"/>
         </StackPanel>
 
         <!-- Кнопка "Сохранить" внизу страницы -->

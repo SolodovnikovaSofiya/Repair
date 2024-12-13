@@ -20,7 +20,6 @@ namespace Repair.Pages
     /// </summary>
     public partial class DataPage : Page
     {
-        private RepairRequest _context = new RepairRequest();
         public DataPage()
         {
             InitializeComponent();
