@@ -1,53 +1,65 @@
 ﻿<Page
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="Repair.Pages.AddRequestPage"
-      Title="AddRequestPage"
-      Style="{StaticResource BasePageStyle}"
-      Width="800"
-      Height="350">
-    <!-- Ограничение высоты страницы -->
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="av"
+    x:Class="Repair.Pages.AddRequestPage"
+    Title="AddRequestPage"
+    Width="800"
+    Height="300">
 
-    <Grid>
+    <Grid Margin="10,0,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <!-- Первая колонка занимает половину ширины -->
             <ColumnDefinition Width="*"/>
-            <!-- Вторая колонка также занимает половину ширины -->
         </Grid.ColumnDefinitions>
 
         <!-- Левая колонка -->
-        <StackPanel Grid.Column="0" >
-            <TextBlock Text="Оборудование" Style="{StaticResource BaseTextBlockStyle}" FontSize="16" />
-            <ComboBox x:Name="EquipmentComboBox" SelectedItem="{Binding Equipment.name}" Style="{StaticResource BaseComboBoxStyle}"/>
-
-            <TextBlock Text="Тип неисправности" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <ComboBox x:Name="FaultTypeComboBox" SelectedItem="{Binding FaultType.name}" Style="{StaticResource BaseComboBoxStyle}"/>
-
-            <TextBlock Text="Клиент" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <ComboBox x:Name="ClientComboBox" SelectedItem="{Binding Client.name}" Style="{StaticResource BaseComboBoxStyle}"/>
-
-            <TextBlock Text="Статус" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <ComboBox x:Name="StatusComboBox" SelectedItem="{Binding Status.name}" Style="{StaticResource BaseComboBoxStyle}"/>
+        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+            <TextBlock Text="Оборудование" FontSize="16" Margin="0,0,0,5"/>
+            <ComboBox x:Name="EquipmentComboBox" 
+          DisplayMemberPath="name" 
+          SelectedValuePath="equipmentId" 
+          SelectedValue="{Binding equipmentId, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <TextBlock Text="Тип неисправности" FontSize="16" Margin="0,0,0,5"/>
+            <ComboBox x:Name="FaultTypeComboBox" 
+          DisplayMemberPath="name" 
+          SelectedValuePath="faultTypeId" 
+          SelectedValue="{Binding faultTypeId, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <TextBlock Text="Клиент" FontSize="16" Margin="0,0,0,5"/>
+            <ComboBox x:Name="ClientComboBox" 
+          DisplayMemberPath="name" 
+          SelectedValuePath="clientId" 
+          SelectedValue="{Binding clientId, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <TextBlock Text="Статус" FontSize="16" Margin="0,0,0,5"/>
+            <ComboBox x:Name="StatusComboBox" 
+          DisplayMemberPath="name" 
+          SelectedValuePath="statusId" 
+          SelectedValue="{Binding statusId, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
+        <!-- Правая колонка -->
         <StackPanel Grid.Column="1">
+            <TextBlock Text="Дата заявки" FontSize="16" Margin="0,0,0,5"/>
+            <DatePicker x:Name="RequestDatePicker" SelectedDate="{Binding requestDate}" FontSize="16" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Дата заявки" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <DatePicker x:Name="RequestDatePicker"  SelectedDate="{Binding requestDate}" Style="{StaticResource BaseDatePickerStyle}" FontSize="16"/>
-
-            <TextBlock Text="Описание" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-            <TextBox x:Name="DescriptionTextBox"  Text="{Binding description}" Style="{StaticResource BaseTextBoxStyle}"/>
+            <TextBlock Text="Описание" FontSize="16" Margin="0,0,0,5"/>
+            <TextBox x:Name="DescriptionTextBox" Text="{Binding description}" Height="100" Margin="0,0,0,10"/>
         </StackPanel>
 
-        <!-- Кнопка "Сохранить" внизу страницы -->
-        <Button Content="Сохранить" 
-                Width="118"  
-                Style="{StaticResource BaseButtonStyle}" 
-                Click="SaveButton_Click" 
-                FontSize="24" 
-                Height="34" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Bottom" Grid.ColumnSpan="2" Margin="5,0,5,0" />
+        <!-- Кнопка "Сохранить" -->
+        <Button Content="Сохранить"
+                Width="150"
+                Height="40"
+                Click="ButtonSave_Click"
+                FontSize="12"
+                Margin="0,235,0,0"
+                HorizontalAlignment="Center"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Top"/>
     </Grid>
 </Page>

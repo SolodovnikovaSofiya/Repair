@@ -1,33 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Repair.Pages;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Repair
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        public DataGrid DataGridUser { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new DataPage(this)); 
         }
 
-        private void Button_Back_Click(object sender, RoutedEventArgs e)
+        private void NavigateToRepairList_Click(object sender, RoutedEventArgs e)
         {
-            if (MainFrame.CanGoBack) MainFrame.GoBack();
+            MainFrame.Navigate(new DataPage(this));
+        }
+
+        private void NavigateToAddRepair_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new AddRequestPage(null)); 
+        }
+
+        private void NavigateToEditRepair_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataGridUser != null && DataGridUser.SelectedItem != null)
+            {
+                var selectedRequest = DataGridUser.SelectedItem as RepairRequest;
+                if (selectedRequest != null)
+                {
+                    MainFrame.Navigate(new AddRequestPage(selectedRequest));
+                }
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, выберите заявку для редактирования.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Переход к назначению исполнителя
+        private void NavigateToAssignExecutor_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new AssignExecutorPage());
+        }
+
+        private void NavigateToStatistics_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new StatisticsPage());
+        }
+
+        private void GoBack_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainFrame.CanGoBack)
+            {
+                MainFrame.GoBack();
+            }
         }
     }
 }

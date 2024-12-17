@@ -3,46 +3,46 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 
 namespace Repair.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для AddRequestPage.xaml
-    /// </summary>
     public partial class AddRequestPage : Page
     {
-        private Entities _context;
-        private RepairRequest _repairRequest = new RepairRequest();
+        private Repair.RepairRequest _currentRequest;
 
-        public AddRequestPage()
+        public AddRequestPage(Repair.RepairRequest selectedRequest)
         {
             InitializeComponent();
-            _context = Entities.GetContext();
-            this.DataContext = _repairRequest;
+
+            _currentRequest = selectedRequest;
+            DataContext = _currentRequest;
+
             LoadData();
         }
 
         private void LoadData()
         {
-            EquipmentComboBox.ItemsSource = _context.Equipment.ToList();
-            EquipmentComboBox.DisplayMemberPath = "name";
-            EquipmentComboBox.SelectedValuePath = "EquipmentId";
+            using (var context = new Entities())
+            {
+                EquipmentComboBox.ItemsSource = context.Equipment.ToList();
+                FaultTypeComboBox.ItemsSource = context.FaultType.ToList();
+                ClientComboBox.ItemsSource = context.Client.ToList();
+                StatusComboBox.ItemsSource = context.Status.ToList();
 
-            FaultTypeComboBox.ItemsSource = _context.FaultType.ToList();
-            FaultTypeComboBox.DisplayMemberPath = "name";
-            FaultTypeComboBox.SelectedValuePath = "FaultTypeId";
+                if (_currentRequest != null)
+                {
+                    EquipmentComboBox.SelectedValue = _currentRequest.equipmentId;
+                    FaultTypeComboBox.SelectedValue = _currentRequest.faultTypeId;
+                    ClientComboBox.SelectedValue = _currentRequest.clientId;
+                    StatusComboBox.SelectedValue = _currentRequest.statusId;
 
-            ClientComboBox.ItemsSource = _context.Client.ToList();
-            ClientComboBox.DisplayMemberPath = "name";
-            ClientComboBox.SelectedValuePath = "ClientId";
-
-            StatusComboBox.ItemsSource = _context.Status.ToList();
-            StatusComboBox.DisplayMemberPath = "name";
-            StatusComboBox.SelectedValuePath = "StatusId";
+                    RequestDatePicker.SelectedDate = _currentRequest.requestDate;
+                    DescriptionTextBox.Text = _currentRequest.description;
+                }
+            }
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             StringBuilder errors = new StringBuilder();
 
@@ -54,34 +54,42 @@ namespace Repair.Pages
                 errors.AppendLine("Выберите клиента!");
             if (StatusComboBox.SelectedItem == null)
                 errors.AppendLine("Выберите статус!");
-            if (RequestDatePicker.SelectedDate == null)
-                errors.AppendLine("Выберите дату заявки!");
             if (string.IsNullOrWhiteSpace(DescriptionTextBox.Text))
                 errors.AppendLine("Укажите описание!");
 
             if (errors.Length > 0)
             {
-                MessageBox.Show(errors.ToString(), "Ошибка");
+                MessageBox.Show(errors.ToString());
                 return;
             }
 
-            _repairRequest.equipmentId = (int)EquipmentComboBox.SelectedValue;
-            _repairRequest.faultTypeId = (int)FaultTypeComboBox.SelectedValue;
-            _repairRequest.clientId = (int)ClientComboBox.SelectedValue;
-            _repairRequest.statusId = (int)StatusComboBox.SelectedValue;
-            _repairRequest.requestDate = RequestDatePicker.SelectedDate.Value;
-            _repairRequest.description = DescriptionTextBox.Text;
+            _currentRequest.equipmentId = (int)EquipmentComboBox.SelectedValue;
+            _currentRequest.faultTypeId = (int)FaultTypeComboBox.SelectedValue;
+            _currentRequest.clientId = (int)ClientComboBox.SelectedValue;
+            _currentRequest.statusId = (int)StatusComboBox.SelectedValue;
+            _currentRequest.requestDate = RequestDatePicker.SelectedDate ?? DateTime.Now;
+            _currentRequest.description = DescriptionTextBox.Text;
 
-            _context.RepairRequest.Add(_repairRequest);
-            try
+            using (var context = new Entities())
             {
-                _context.SaveChanges();
-                MessageBox.Show("Заявка успешно добавлена.", "Успех");
-                NavigationService.Navigate(new DataPage());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message.ToString(), "Ошибка");
+                try
+                {
+                    if (_currentRequest.requestId == 0)
+                    {
+                        context.RepairRequest.Add(_currentRequest);
+                    }
+                    else
+                    {
+                        context.Entry(_currentRequest).State = System.Data.Entity.EntityState.Modified;
+                    }
+
+                    context.SaveChanges();
+                    MessageBox.Show("Данные успешно сохранены!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString());
+                }
             }
         }
     }

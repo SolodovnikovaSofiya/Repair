@@ -6,20 +6,18 @@
 //     Изменения, вносимые в этот файл вручную, будут перезаписаны при повторном создании кода.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
+using System;
+using System.Collections.Generic;
 namespace Repair
-{
-    using System;
-    using System.Collections.Generic;
-    
-    public partial class RepairRequest
     {
+    public partial class RepairRequest
+        {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RepairRequest()
         {
             this.Comment = new HashSet<Comment>();
-        }
-    
+            }
+
         public int requestId { get; set; }
         public System.DateTime requestDate { get; set; }
         public int equipmentId { get; set; }
@@ -30,7 +28,7 @@ namespace Repair
         public Nullable<int> assignedTo { get; set; }
         public Nullable<System.DateTime> completionDate { get; set; }
         public string report { get; set; }
-    
+
         public virtual Client Client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comment { get; set; }

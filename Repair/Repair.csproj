@@ -94,8 +94,14 @@
     <Compile Include="Pages\AddRequestPage.xaml.cs">
       <DependentUpon>AddRequestPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\AssignExecutorPage.xaml.cs">
+      <DependentUpon>AssignExecutorPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\DataPage.xaml.cs">
       <DependentUpon>DataPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\StatisticsPage.xaml.cs">
+      <DependentUpon>StatisticsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Performer.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -132,7 +138,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\AssignExecutorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\DataPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StatisticsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
